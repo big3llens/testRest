@@ -24,9 +24,6 @@ public class ProductController {
 
     @GetMapping
     public Page<ProductDto> findAllProducts (
-            @RequestParam(name = "min_price", defaultValue = "0") Integer minPrice,
-            @RequestParam(name = "max_price", required = false) Integer maxPrice,
-            @RequestParam(name = "title", required = false)String title,
             @RequestParam(name = "p", defaultValue = "1") Integer page
     ){
         return productService.findAllProducts(page);
