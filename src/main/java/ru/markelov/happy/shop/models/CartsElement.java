@@ -1,8 +1,10 @@
 package ru.markelov.happy.shop.models;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class CartsElement {
     private String title;
     private Integer count;
