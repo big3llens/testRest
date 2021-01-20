@@ -1,30 +1,80 @@
 package ru.markelov.happy.shop.services;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.markelov.happy.shop.dto.ProductDto;
+import ru.markelov.happy.shop.models.CartsElement;
 import ru.markelov.happy.shop.models.Product;
 import ru.markelov.happy.shop.repositories.ProductRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
+@Data
 public class ProductService {
     private ProductRepository productRepository;
+    private List<CartsElement> productCart;
 
     @Autowired
     public ProductService(ProductRepository productRepository){
         this.productRepository = productRepository;
+        productCart = new ArrayList<>();
     }
 
-    public List<Product> findAllProducts(){
-        return productRepository.findAll();
+//    public List<ProductDto> findAllProducts(){
+//        return productRepository.findAll().stream().map(ProductDto::new).collect(Collectors.toList());
+//    }
+
+    public Page<ProductDto> findAllProducts(Integer page){
+        return productRepository.findAll(PageRequest.of(page - 1, 5)).map(ProductDto::new);
     }
 
-    public void deleteProductById(Long id){
+    public ProductDto findProductById(Long id){
+        ProductDto productDto = new ProductDto(productRepository.findById(id).get());
+        return productDto;
+    }
+
+    public void createProduct(ProductDto p){
+        Product product = new Product(p.getTitle(), p.getCost());
+        productRepository.save(product);
+    }
+
+    public void updateProduct(ProductDto productDto){
+        Product product = productRepository.getOne(productDto.getId());
+        product.setTitle(productDto.getTitle());
+        product.setCost(productDto.getCost());
+        productRepository.save(product);
+    }
+
+    public void deleteById(Long id){
         productRepository.deleteById(id);
     }
 
-    public Product addProduct(Product product){
-        return productRepository.save(product);
+    public void deleteAllProducts(){
+        productRepository.deleteAll();
+    }
+
+    public List<CartsElement> addProductToCart(String title, Integer cost){
+        if(productCart.isEmpty()) {
+            productCart.add(new CartsElement(title, 1, cost));
+            return productCart;
+        }
+        for(int i = 0; i <productCart.size(); i ++){
+           if(title.equals(productCart.get(i).getTitle())) {
+               productCart.get(i).setCount(productCart.get(i).getCount() + 1);
+               productCart.get(i).setCost(productCart.get(i).getCost() + cost);
+               return productCart;
+           }
+        }
+        productCart.add(new CartsElement(title, 1, cost));
+        return productCart;
     }
 }
