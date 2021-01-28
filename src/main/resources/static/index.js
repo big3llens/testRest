@@ -33,19 +33,35 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         return arr;
     }
 
-    $scope.addProductToCart = function (title, cost){
+    $scope.drowCart = function (){
         $http({
-            url: contextPath + '/products/cart',
-            method: 'GET',
-            params: {
-                title: title,
-                cost: cost,
-            }
+            url: contextPath + '/cart',
+            method: 'GET'
         }).then(function (response) {
             $scope.Cart = response.data;
-            $scope.fillTable();
         });
+    }
+
+    $scope.addProductToCart = function (id){
+        $http.get(contextPath + '/cart/add/' + id)
+            .then(function (response) {
+                $scope.drowCart();
+            });
     };
+
+    $scope.deleteProductToCart = function (id){
+        $http.get(contextPath + '/cart/delete/' + id)
+            .then(function (response) {
+                $scope.drowCart();
+            });
+    };
+
+    $scope.clearCart = function () {
+        $http.get(contextPath + '/cart/clear')
+            .then(function (response) {
+                $scope.drowCart();
+            });
+    }
 
     $scope.deleteProductById = function (id){
         $http.delete(contextPath + '/products/' + id)
