@@ -5,23 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.markelov.happy.shop.dto.ProductDto;
-import ru.markelov.happy.shop.models.CartsElement;
+import ru.markelov.happy.shop.models.OrderItem;
 import ru.markelov.happy.shop.models.Product;
 import ru.markelov.happy.shop.repositories.ProductRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Component
 @Data
 public class ProductService {
     private ProductRepository productRepository;
-    private List<CartsElement> productCart;
+    private List<OrderItem> productCart;
 
     @Autowired
     public ProductService(ProductRepository productRepository){
@@ -37,7 +34,11 @@ public class ProductService {
         return productRepository.findAll(PageRequest.of(page - 1, 5)).map(ProductDto::new);
     }
 
-    public ProductDto findProductById(Long id){
+    public Optional<Product> findProductById(Long id){
+        return productRepository.findById(id);
+    }
+
+    public ProductDto findProductDtoById(Long id){
         ProductDto productDto = new ProductDto(productRepository.findById(id).get());
         return productDto;
     }
@@ -62,19 +63,19 @@ public class ProductService {
         productRepository.deleteAll();
     }
 
-    public List<CartsElement> addProductToCart(String title, Integer cost){
-        if(productCart.isEmpty()) {
-            productCart.add(new CartsElement(title, 1, cost));
-            return productCart;
-        }
-        for(int i = 0; i <productCart.size(); i ++){
-           if(title.equals(productCart.get(i).getTitle())) {
-               productCart.get(i).setCount(productCart.get(i).getCount() + 1);
-               productCart.get(i).setCost(productCart.get(i).getCost() + cost);
-               return productCart;
-           }
-        }
-        productCart.add(new CartsElement(title, 1, cost));
-        return productCart;
-    }
+//    public List<OrderItem> addProductToCart(String title, Integer cost){
+//        if(productCart.isEmpty()) {
+//            productCart.add(new OrderItem(title, 1, cost));
+//            return productCart;
+//        }
+//        for(int i = 0; i <productCart.size(); i ++){
+//           if(title.equals(productCart.get(i).getTitle())) {
+//               productCart.get(i).setCount(productCart.get(i).getCount() + 1);
+//               productCart.get(i).setCost(productCart.get(i).getCost() + cost);
+//               return productCart;
+//           }
+//        }
+//        productCart.add(new OrderItem(title, 1, cost));
+//        return productCart;
+//    }
 }

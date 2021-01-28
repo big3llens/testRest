@@ -24,7 +24,8 @@
             <td>Название</td>
             <td>Цена</td>
             <td>Удаление</td>
-            <td>Добавление</td>
+            <td>Добавление в корзины</td>
+            <td>Удаление из корзины</td>
         </tr>
         </thead>
         <tbody>
@@ -35,7 +36,10 @@
                 <button class="btn btn-danger" ng-click="deleteProductById(p.id)">Удалить товар</button>
             </td>
             <td>
-                <button class="btn btn-primary" ng-click="addProductToCart(p.title, p.cost)">Добавить в корзину</button>
+                <button class="btn btn-primary" ng-click="addProductToCart(p.id)">Добавить в корзину</button>
+            </td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProductToCart(p.id)">Удалить из корзины</button>
             </td>
         </tr>
         </tbody>
@@ -48,6 +52,7 @@
             </li>
         </ul>
     </nav>
+    <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
 
     <h3>Добавить новый товар</h3>
     <form novalidate ng-submit="submitCreateNewProduct()">
@@ -69,14 +74,22 @@
         <tr>
             <td>Название</td>
             <td>Количество</td>
-            <td>Цен</td>
+            <td>Цена за штуку</td>
+            <td>Итоговая цена позиции</td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="p in Cart">
+        <tr ng-repeat="p in Cart.items">
             <td>{{p.title}}</td>
             <td>{{p.count}}</td>
             <td>{{p.cost}}</td>
+            <td>{{p.totalCost}}</td>
+        </tr>
+        <tr>
+            <td>Сумма</td>
+            <td></td>
+            <td></td>
+            <td>{{Cart.totalPrice}}</td>
         </tr>
         </tbody>
     </table>
