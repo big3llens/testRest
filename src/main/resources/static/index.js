@@ -70,7 +70,6 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
-
     $scope.submitCreateNewProduct = function () {
         $http.post(contextPath + '/products', $scope.newProduct)
             .then(function (response) {
