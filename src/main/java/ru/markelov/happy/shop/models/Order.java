@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
+@Table(name = "order")
 public class Order {
 
     @Id
@@ -22,6 +23,6 @@ public class Order {
     private String user;
 
     @Column(name = "cart")
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> itemList;
 }
