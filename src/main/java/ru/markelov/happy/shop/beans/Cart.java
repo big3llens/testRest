@@ -2,7 +2,10 @@ package ru.markelov.happy.shop.beans;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 import ru.markelov.happy.shop.exceptions.ResourceNotFoundException;
 import ru.markelov.happy.shop.models.OrderItem;
 import ru.markelov.happy.shop.models.Product;
@@ -15,6 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Data
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
     private final ProductService productService;
     private List<OrderItem> items;

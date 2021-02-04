@@ -1,5 +1,6 @@
 angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/happy/api/v1';
+    const contextPath = 'http://localhost:8189/happy';
+    $scope.authorized = false;
 
     // $scope.fillTable = function () {
     //     $http.get(contextPath + '/api/v1/products/')
@@ -11,7 +12,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.fillTable = function (pageIndex = 1) {
         $http({
-            url: contextPath + '/products',
+            url: contextPath + '/api/v1/products',
             method: 'GET',
             params: {
                 title: $scope.filter ? $scope.filter.title : null,
@@ -35,7 +36,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.drowCart = function (){
         $http({
-            url: contextPath + '/cart',
+            url: contextPath + '/api/v1/cart',
             method: 'GET'
         }).then(function (response) {
             $scope.Cart = response.data;
@@ -43,36 +44,35 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     }
 
     $scope.addProductToCart = function (id){
-        $http.get(contextPath + '/cart/add/' + id)
+        $http.get(contextPath + '/api/v1/cart/add/' + id)
             .then(function (response) {
                 $scope.drowCart();
             });
     };
 
     $scope.deleteProductToCart = function (id){
-        $http.get(contextPath + '/cart/delete/' + id)
+        $http.get(contextPath + '/api/v1/cart/delete/' + id)
             .then(function (response) {
                 $scope.drowCart();
             });
     };
 
     $scope.clearCart = function () {
-        $http.get(contextPath + '/cart/clear')
+        $http.get(contextPath + '/api/v1/cart/clear')
             .then(function (response) {
                 $scope.drowCart();
             });
     }
 
     $scope.deleteProductById = function (id){
-        $http.delete(contextPath + '/products/' + id)
+        $http.delete(contextPath + '/api/v1/products/' + id)
             .then(function (responce){
                 $scope.fillTable();
             });
     };
 
-
     $scope.submitCreateNewProduct = function () {
-        $http.post(contextPath + '/products', $scope.newProduct)
+        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
             .then(function (response) {
                 // console.log('sended:');
                 // console.log($scope.newProduct);
@@ -80,6 +80,33 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
                 // console.log(response.data);
                 $scope.newProduct = null;
                 $scope.fillTable();
+            });
+    };
+
+    $scope.checkout = function () {
+        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
+            .then(function (response) {
+                // console.log('sended:');
+                // console.log($scope.newProduct);
+                // console.log('received');
+                // console.log(response.data);
+                $scope.newProduct = null;
+                $scope.fillTable();
+            });
+    };
+
+    $scope.tryToAuth = function () {
+        $http.post(contextPath + '/auth', $scope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $scope.user.username = response.data.name;
+                    $scope.user.password = null;
+                    $scope.authorized = true;
+                    $scope.fillTable();
+                }
+            }, function errorCallback(response) {
+                window.alert("Error");
             });
     };
 
