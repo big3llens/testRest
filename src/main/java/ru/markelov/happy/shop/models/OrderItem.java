@@ -3,21 +3,40 @@ package ru.markelov.happy.shop.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import javax.persistence.*;
+
 @NoArgsConstructor
+@Data
+@Entity
+@Table(name = "order_items")
 public class OrderItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String title;
-    private Integer count;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(name = "cost")
     private Integer cost;
+
+    @Column(name = "count")
+    private Integer count;
+
+    @Column(name = "totalCost")
     private Integer totalCost;
 
+    private String title;
+
     public OrderItem(Product product) {
-        this.id = product.getId();
         this.title = product.getTitle();
-        this.count = 1;
+        this.id = product.getId();
         this.cost = product.getCost();
-        totalCost = cost;
+        this.count = 1;
+        totalCost = product.getCost();
     }
 
     public void increment(){

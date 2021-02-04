@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.markelov.happy.shop.dto.ProductDto;
-import ru.markelov.happy.shop.models.OrderItem;
 import ru.markelov.happy.shop.services.ProductService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
