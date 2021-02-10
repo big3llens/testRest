@@ -56,6 +56,15 @@ public class Order {
         orderItem.setOrder(this);
     }
 
+    void add(OrderItem orderItem, boolean set) {
+        if (orderItem != null) {
+            getItems().add(orderItem);
+            if (set) {
+                orderItem.setOrder(this, false);
+            }
+        }
+    }
+
     public void remove(OrderItem orderItem) {
         getItems().remove(orderItem);
         orderItem.setOrder(null);
@@ -66,9 +75,9 @@ public class Order {
         this.price = cart.getTotalPrice();
         this.user = user;
         cart.getItems().stream().forEach((oi) -> {
-//            oi.setOrder(this);
-//            items.add(oi);
-            add(oi);
+            oi.setOrder(this);
+            items.add(oi);
+//            add(oi);
         });
 //        System.out.println("1. " + this.items);
     }

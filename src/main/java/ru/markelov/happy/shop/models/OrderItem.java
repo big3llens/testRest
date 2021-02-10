@@ -52,7 +52,14 @@ public class OrderItem {
     }
 
     public void setOrder(Order order) {
+        setOrder(order, true);
+    }
+
+    void setOrder(Order order, boolean add) {
         this.order = order;
+        if (order != null && add) {
+            order.add(this, false);
+        }
     }
 
     public OrderItem(Product product) {
