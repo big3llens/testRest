@@ -26,6 +26,22 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
+    $scope.showCart = function () {
+        $http({
+            url: contextPath + '/api/v1/cart',
+            method: 'GET'
+        }).then(function (response) {
+            $scope.Cart = response.data;
+        });
+    };
+
+    $scope.showOrders = function () {
+        $http.get(contextPath + '/api/v1/orders/show')
+            .then(function (response) {
+                $scope.MyOrders = response.data;
+            });
+    }
+
     $scope.generatePagesIndexes = function(startPage, endPage) {
         let arr = [];
         for (let i = startPage; i < endPage + 1; i++) {
@@ -109,6 +125,14 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
                 window.alert("Error");
             });
     };
+
+    $scope.checkout = function () {
+        $http.get(contextPath + '/api/v1/orders/create')
+            .then(function (response) {
+                $scope.showOrders();
+                $scope.showCart;
+            });
+    }
 
     $scope.fillTable();
 });

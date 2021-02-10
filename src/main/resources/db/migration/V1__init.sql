@@ -48,10 +48,22 @@ INSERT INTO products (title, cost) VALUES ('Apple', 40), ('Orange', 55),
 ('Jam', 55), ('Tea', 60), ('Coffee', 85), ('Bread', 25),('Fish', 95), ('Shrimp', 90),
 ('Squid', 55);
 
+create table orders (
+                         id                      bigserial primary key,
+                         user_id                 bigint references users (id),
+                         price                   int,
+                         created_at              timestamp default current_timestamp,
+                         updated_at              timestamp default current_timestamp
+);
+
 create table order_items (
-                             id                      bigserial primary key,
-                             title                   varchar(255),
-                             count                   int,
-                             price_per_item          int,
-                             totalCost               int
+                         id                      bigserial primary key,
+                         title                   varchar(255),
+                         product_id              bigint references products (id),
+                         order_id                bigint references orders (id),
+                         count                   int,
+                         cost                    int,
+                         totalCost               int,
+                         created_at              timestamp default current_timestamp,
+                         updated_at              timestamp default current_timestamp
 );

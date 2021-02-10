@@ -109,6 +109,25 @@
             </tr>
             </tbody>
         </table>
+        <h3>Заказы</h3>
+        <table class="table table-hover" cellpadding="0" cellspacing="0">
+            <thead>
+            <tr>
+                <td>ID</td>
+                <td>Имя пользователя</td>
+                <td>Цена</td>
+                <td>Дата создания</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="o in MyOrders">
+                <td>#{{o.id}}</td>
+                <td>{{o.username}}</td>
+                <td>{{o.totalPrice}}</td>
+                <td>{{o.creationDateTime}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
