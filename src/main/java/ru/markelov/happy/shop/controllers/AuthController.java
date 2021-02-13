@@ -9,12 +9,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.markelov.happy.shop.beans.JwtTokenUtil;
 import ru.markelov.happy.shop.dto.JwtRequest;
 import ru.markelov.happy.shop.dto.JwtResponse;
 import ru.markelov.happy.shop.dto.RequestAuth;
 import ru.markelov.happy.shop.exceptions.MarketError;
+import ru.markelov.happy.shop.models.User;
 import ru.markelov.happy.shop.services.UserService;
 
 import java.security.Principal;
@@ -27,7 +29,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/auth")
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest, Principal principal) {
+    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException ex) {
@@ -36,6 +38,13 @@ public class AuthController {
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new RequestAuth(token, userDetails.getUsername()));
-//        return ResponseEntity.ok(new JwtResponse(token));
     }
+
+//    @PostMapping("/create")
+//    public void createNewUser(@RequestBody JwtRequest authRequest, @RequestParam("email") String email) {
+//        User user = new User(authRequest.getUsername(), authRequest.getPassword(), email);
+//        System.out.println(user.toString());
+//        userService.createNewUser(user);
+//    }
+
 }

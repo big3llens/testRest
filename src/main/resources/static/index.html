@@ -15,7 +15,7 @@
 <body>
 
 <div class="container" ng-controller="indexController">
-    <h1>Happy Market</h1>
+    <h1 style="text-align: center">Happy Market</h1>
     <div class="mb-3 text-center" ng-show="!authorized">
         <form class="form-signin" ng-submit="tryToAuth()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
             <h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
@@ -26,8 +26,21 @@
             <input type="password" ng-model="user.password" id="inputPassword" class="form-control" placeholder="Пароль"
                    style="margin-bottom: 10px;" required="">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-            <p class="mt-5 mb-3 text-muted">© GeekBrains 2021</p>
         </form>
+<!--        <form class="form-signin" ng-submit="userRegistration(email)" style="max-width: 350px; padding: 15px; margin: 0 auto;">-->
+<!--            <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>-->
+<!--            <label for="inputNewUsername" class="sr-only">Имя пользователя</label>-->
+<!--            <input type="text" ng-model="newUser.username" id="inputNewUsername" class="form-control"-->
+<!--                   placeholder="Имя пользователя" style="margin-bottom: 10px;" required="">-->
+<!--            <label for="inputNewPassword" class="sr-only">Пароль</label>-->
+<!--            <input type="password" ng-model="newUser.password" id="inputNewPassword" class="form-control" placeholder="Пароль"-->
+<!--                   style="margin-bottom: 10px;" required="">-->
+<!--            <label for="email" class="sr-only">Пароль</label>-->
+<!--            <input type="password" ng-model="email" id="email" class="form-control" placeholder="email"-->
+<!--                   style="margin-bottom: 10px;" required="">-->
+<!--            <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегестрироваться</button>-->
+<!--            <p class="mt-5 mb-3 text-muted">© GeekBrains 2021</p>-->
+<!--        </form>-->
     </div>
 
     <div ng-show="authorized">
@@ -67,8 +80,6 @@
                 </li>
             </ul>
         </nav>
-        <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
-        <button class="btn btn-primary" ng-click="checkout()">Оформить заказ</button>
 
 <!--        <h3>Добавить новый товар</h3>-->
 <!--        <form novalidate ng-submit="submitCreateNewProduct()">-->
@@ -109,6 +120,26 @@
             </tr>
             </tbody>
         </table>
+        <form class="form-signin" ng-submit="checkout(city, street, numberOfHouse)" style="margin: 0 70% 0 0;">
+            <label for="inputCity" class="sr-only">Город получателя</label>
+            <input type="text" ng-model="city" id="inputCity" class="form-control"
+                   placeholder="Город получателся" style="margin-bottom: 10px;" required="">
+            <label for="inputStreet" class="sr-only">Улица получателя</label>
+            <input type="text" ng-model="street" id="inputStreet" class="form-control" placeholder="Улица получателя"
+                   style="margin-bottom: 10px;" required="">
+            <label for="numberOfHouse" class="sr-only">Дом получателя</label>
+            <input type="number" ng-model="numberOfHouse" id="numberOfHouse" class="form-control"
+                   placeholder="Дом получателя" style="margin-bottom: 10px;" required="">
+            <button class="btn btn-primary" type="submit">Оформить заказ</button>
+            <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+        </form>
+<!--        <form method="get" th:action="@{'/products/add'}">-->
+<!--            <input class="form-control" type="number" placeholder="ID товара" name="id"/>-->
+<!--            <input class="form-control" type="text" placeholder="Наименование товара" name="name"/>-->
+<!--            <input class="form-control" type="number" placeholder="Стоимость товара" name="cost"/>-->
+<!--            <button class="btn btn-primary" type="submit">Добавить</button>-->
+<!--        </form>-->
+
         <h3>Заказы</h3>
         <table class="table table-hover" cellpadding="0" cellspacing="0">
             <thead>
@@ -116,6 +147,7 @@
                 <td>ID</td>
                 <td>Имя пользователя</td>
                 <td>Цена</td>
+                <td>Адрес доставки</td>
                 <td>Дата создания</td>
             </tr>
             </thead>
@@ -123,7 +155,8 @@
             <tr ng-repeat="o in MyOrders">
                 <td>#{{o.id}}</td>
                 <td>{{o.username}}</td>
-                <td>{{o.totalPrice}}</td>
+                <td>{{o.price}}</td>
+                <td>{{o.adress}}</td>
                 <td>{{o.creationDateTime}}</td>
             </tr>
             </tbody>

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.markelov.happy.shop.exceptions.UserAlreadyExistsException;
 import ru.markelov.happy.shop.models.Role;
 import ru.markelov.happy.shop.models.User;
 import ru.markelov.happy.shop.repositories.UserRepository;
@@ -20,6 +21,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+
+    public void createNewUser(User user){
+//        userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new UserAlreadyExistsException("Данный пользователь уже существует"));
+        userRepository.save(user);
+    }
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

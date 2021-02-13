@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.markelov.happy.shop.beans.Cart;
 
 import javax.persistence.*;
@@ -35,6 +36,9 @@ public class Order {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "adress")
+    private String adress;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -43,32 +47,15 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
-    }
-
-    public void add(OrderItem orderItem) {
-        getItems().add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    public void remove(OrderItem orderItem) {
-        getItems().remove(orderItem);
-        orderItem.setOrder(null);
-    }
-
-    public Order (Cart cart, User user){
+    public Order (Cart cart, User user, String city, String street, String numberOfHouse){
         this.items = new ArrayList<>();
         this.price = cart.getTotalPrice();
         this.user = user;
+        this.adress = city + " " + street + " " + numberOfHouse;
         cart.getItems().stream().forEach((oi) -> {
-//            oi.setOrder(this);
-//            items.add(oi);
-            add(oi);
+            oi.setOrder(this);
+            items.add(oi);
+//            add(oi);
         });
 //        System.out.println("1. " + this.items);
     }

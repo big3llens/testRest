@@ -17,7 +17,7 @@ public class CartController {
 
     @GetMapping
     public CartDto getCart(){
-//        System.out.println("2" + cart);
+        System.out.println("2" + cart);
         return new CartDto(cart);
     }
 

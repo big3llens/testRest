@@ -35,6 +35,15 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
+    $scope.clearCart = function () {
+        $http({
+            url: contextPath + '/api/v1/cart/clear',
+            method: 'GET'
+        }).then(function (response) {
+            $scope.showCart();
+        });
+    };
+
     $scope.showOrders = function () {
         $http.get(contextPath + '/api/v1/orders/show')
             .then(function (response) {
@@ -99,16 +108,22 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
-    $scope.checkout = function () {
-        $http.post(contextPath + '/api/v1/products', $scope.newProduct)
-            .then(function (response) {
-                // console.log('sended:');
-                // console.log($scope.newProduct);
-                // console.log('received');
-                // console.log(response.data);
-                $scope.newProduct = null;
-                $scope.fillTable();
-            });
+    $scope.checkout = function (city, street, numberOfHouse) {
+        $http({
+            url: contextPath + '/api/v1/orders/create',
+            method: 'POST',
+            params: {
+                city: city,
+                street: street,
+                numberOfHouse: numberOfHouse,
+            }
+        }).then(function (response) {
+            $scope.showOrders();
+            $scope.clearCart();
+            $scope.city = null;
+            $scope.street = null;
+            $scope.numberOfHouse = null;
+        });
     };
 
     $scope.tryToAuth = function () {
@@ -126,13 +141,26 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
-    $scope.checkout = function () {
-        $http.get(contextPath + '/api/v1/orders/create')
-            .then(function (response) {
-                $scope.showOrders();
-                $scope.showCart;
+
+    $scope.userRegistration = function (email) {
+        $http.post(contextPath + '/create', $scope.newUser, email)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $scope.newUser.username = null;
+                    $scope.newUser.password = null;
+                }
+            }, function errorCallback(response) {
+                window.alert("Error");
             });
-    }
+    };
+
+    // $scope.checkout = function (city, street, numberOfHouse) {
+    //     $http.get(contextPath + '/api/v1/orders/create/' + city + '/' + street + '/' + numberOfHouse)
+    //         .then(function (response) {
+    //             $scope.showOrders();
+    //             $scope.clearCart();
+    //         });
+    // }
 
     $scope.fillTable();
 });

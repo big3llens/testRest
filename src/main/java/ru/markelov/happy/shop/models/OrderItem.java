@@ -33,7 +33,7 @@ public class OrderItem {
     @Column(name = "count")
     private Integer count;
 
-    @Column(name = "totalCost")
+    @Column(name = "total_cost")
     private Integer totalCost;
 
     @CreationTimestamp
@@ -47,20 +47,12 @@ public class OrderItem {
     @Column(name = "title")
     private String title;
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     public OrderItem(Product product) {
+        this.product = product;
         this.title = product.getTitle();
-        this.id = product.getId();
         this.cost = product.getCost();
         this.count = 1;
-        totalCost = product.getCost();
+        this.totalCost = this.cost;
     }
 
     public void increment(){

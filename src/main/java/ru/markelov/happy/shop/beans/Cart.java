@@ -32,7 +32,7 @@ public class Cart {
 
     public void addToCart(Long id){
         for (OrderItem oi: items) {
-            if(oi.getId().equals(id)){
+            if(oi.getProduct().getId().equals(id)){
                 oi.increment();
                 incrementTotalCost(oi.getCost());
                 return;
@@ -46,7 +46,7 @@ public class Cart {
 
     public void deleteProductToCart(Long id){
         for (OrderItem oi: items) {
-            if(oi.getId().equals(id)){
+            if(oi.getProduct().getId().equals(id)){
                 items.removeIf((o) -> o.getCount().equals(1));
                 if(oi.getCount() >= 1){
                     oi.decrement();
