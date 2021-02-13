@@ -2,10 +2,7 @@ package ru.markelov.happy.shop.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.markelov.happy.shop.dto.OrderDto;
 import ru.markelov.happy.shop.exceptions.ResourceNotFoundException;
 import ru.markelov.happy.shop.models.User;
@@ -23,11 +20,14 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
 
-    @GetMapping("/create")
+//    @PathVariable String city, @PathVariable String street, @PathVariable String numberOfHouse,   {city}/{street}/{numberOfHouse}
+
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(Principal principal){
+    public void createOrder(Principal principal,  @RequestParam("city") String city, @RequestParam("street") String street, @RequestParam("numberOfHouse") String numberOfHouse){
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
-        orderService.createOrder(user);
+        orderService.createOrder(user, city, street, numberOfHouse);
+//        System.out.println("Flhtccccccc: " + city + " " + street + " " + numberOfHouse);
     }
 
     @GetMapping("/show")
