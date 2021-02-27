@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import ru.markelov.happy.shop.beans.Counter;
 import ru.markelov.happy.shop.dto.ProductDto;
 import ru.markelov.happy.shop.models.OrderItem;
 import ru.markelov.happy.shop.models.Product;
@@ -61,6 +62,44 @@ public class ProductService {
 
     public void deleteAllProducts(){
         productRepository.deleteAll();
+    }
+
+    public void countMethods(){
+//        List<Integer> countMethodsArr = new ArrayList<>();
+        Integer[] countMethodsArr = addCountMethods();
+        Integer maxCount = 0;
+        for (int i = 0; i < countMethodsArr.length; i++) {
+            if(countMethodsArr[i] > maxCount) maxCount = countMethodsArr[i];
+        }
+        if(maxCount == countMethodsArr[0]) System.out.println("Чаще всего сработал метод: afterAddProductToCart() [количество раз: " + countMethodsArr[0] + "]");
+        if(maxCount == countMethodsArr[1]) System.out.println("Чаще всего сработал метод: deleteProductToCart() [количество раз: " + countMethodsArr[1] + "]");
+        if(maxCount == countMethodsArr[2]) System.out.println("Чаще всего сработал метод: clearCart() [количество раз: " + countMethodsArr[2] + "]");
+        if(maxCount == countMethodsArr[3]) System.out.println("Чаще всего сработал метод: createOrder() [количество раз: " + countMethodsArr[3] + "]");
+        if(maxCount == countMethodsArr[4]) System.out.println("Чаще всего сработал метод: showUserOrders() [количество раз: " + countMethodsArr[4] + "]");
+        if(maxCount == countMethodsArr[5]) System.out.println("Чаще всего сработал метод: findAllProducts() [количество раз: " + countMethodsArr[5] + "]");
+        if(maxCount == countMethodsArr[6]) System.out.println("Чаще всего сработал метод: findProductById() [количество раз: " + countMethodsArr[6] + "]");
+        if(maxCount == countMethodsArr[7]) System.out.println("Чаще всего сработал метод: createProduct() [количество раз: " + countMethodsArr[7] + "]");
+        if(maxCount == countMethodsArr[8]) System.out.println("Чаще всего сработал метод: updateProduct() [количество раз: " + countMethodsArr[8] + "]");
+        if(maxCount == countMethodsArr[9]) System.out.println("Чаще всего сработал метод: deleteById() [количество раз: " + countMethodsArr[9] + "]");
+        if(maxCount == countMethodsArr[10]) System.out.println("Чаще всего сработал метод: deleteAllProducts() [количество раз: " + countMethodsArr[10] + "]");
+
+
+    }
+
+    public Integer[] addCountMethods(){
+        Integer[] countMethodsArr = new Integer[11];
+        countMethodsArr[0] = Counter.getAddProductToCart();
+        countMethodsArr[1] = Counter.getDeleteProductToCart();
+        countMethodsArr[2] = Counter.getClearCart();
+        countMethodsArr[3] = Counter.getCreateOrder();
+        countMethodsArr[4] = Counter.getShowUserOrders();
+        countMethodsArr[5] = Counter.getFindAllProducts();
+        countMethodsArr[6] = Counter.getFindProductById();
+        countMethodsArr[7] = Counter.getCreateProduct();
+        countMethodsArr[8] = Counter.getUpdateProduct();
+        countMethodsArr[9] = Counter.getDeleteById();
+        countMethodsArr[10] = Counter.getDeleteAllProducts();
+        return countMethodsArr;
     }
 
 //    public List<OrderItem> addProductToCart(String title, Integer cost){

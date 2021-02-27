@@ -44,6 +44,13 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
+    $scope.countMetods = function () {
+        $http({
+            url: contextPath + '/api/v1/products/count',
+            method: 'GET'
+        });
+    };
+
     $scope.showOrders = function () {
         $http.get(contextPath + '/api/v1/orders/show')
             .then(function (response) {
