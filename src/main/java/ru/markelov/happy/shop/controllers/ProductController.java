@@ -3,6 +3,7 @@ package ru.markelov.happy.shop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import ru.markelov.happy.shop.beans.Counter;
 import ru.markelov.happy.shop.dto.ProductDto;
 import ru.markelov.happy.shop.services.ProductService;
 
@@ -46,6 +47,11 @@ public class ProductController {
     @DeleteMapping
     public void deleteAllProducts(){
         productService.deleteAllProducts();
+    }
+
+    @GetMapping("/count")
+    public void countMethods(){
+        productService.countMethods();
     }
 
 }
