@@ -1,5 +1,6 @@
 package ru.markelov.happy.shop.services;
 
+import com.happymarket.spring.ws.products.ProductWs;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,12 +15,30 @@ import ru.markelov.happy.shop.repositories.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @Data
 public class ProductService {
     private ProductRepository productRepository;
     private List<OrderItem> productCart;
+
+    public static final Function<Product, ProductWs> functionEntityToSoap = se -> {
+        ProductWs s = new ProductWs();
+        s.setId(se.getId());
+        s.setTitle(se.getTitle());
+        s.setCost(se.getCost());
+        return s;
+    };
+
+    public List<ProductWs> getAllProducts() {
+        return productRepository.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
+    }
+
+    public ProductWs getByName(String title) {
+        return productRepository.findByTitle(title).map(functionEntityToSoap).get();
+    }
 
     @Autowired
     public ProductService(ProductRepository productRepository){
