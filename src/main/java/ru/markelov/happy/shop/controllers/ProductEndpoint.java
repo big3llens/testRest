@@ -26,7 +26,6 @@ public class ProductEndpoint {
         response.setProduct(productService.getByName(request.getTitle()));
         return response;
     }
-
     /*
         Пример запроса: POST http://localhost:8189/ws
 
@@ -47,7 +46,7 @@ public class ProductEndpoint {
         </soapenv:Envelope>
      */
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllStudentsRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllProductsRequest")
     @ResponsePayload
     public GetAllProductsResponse getAllProducts(@RequestPayload GetAllProductsRequest request) {
         GetAllProductsResponse response = new GetAllProductsResponse();
