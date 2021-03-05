@@ -46,6 +46,7 @@ public class ProductEndpoint {
         </soapenv:Envelope>
      */
 
+
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllProductsRequest")
     @ResponsePayload
     public GetAllProductsResponse getAllProducts(@RequestPayload GetAllProductsRequest request) {
